@@ -68,6 +68,7 @@ class RegisterController extends Controller
     {
         
         // dd($data);
+        //  file modificato per registrazione
         
         $data =  User::create([
             'name' => $data['name'],
