@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Auth\Request;
 
 class RegisterController extends Controller
 {
@@ -49,6 +50,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
@@ -64,22 +66,39 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(Request $request)
     {
-        
-        // dd($data);
-        //  file modificato per registrazione
-        
+        dd($data);
+
+        /*
         $data =  User::create([
             'name' => $data['name'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
             'birth_date' => $data['birth_day'],
             'password' => Hash::make($data['password']),
+            'user_img' =>  '/storage/user_image'.$path;
         ]);
+            */
 
+        $data = $request->all();
 
+        // dd($data);
+        $newUser = new User();
 
-        return $data;
+        // $newPost = fill($data);
+        $newUser->name = $data['name'];
+        $newUser->lastname= $data['lastname'];
+        $newUser->email = $data['email'];
+        $newUser->birth_date = $data['birth_date'];
+        $newUser->password= $data['password'];
+
+        if ($request->file('user_img')) {
+            $cover_path = Storage::put('post_cover', $data['image']);
+            $newUser->user_img = $cover_path;
+        }
+        $newUser->save();
+
+        return redirect()-> route('home');
     }
 }
