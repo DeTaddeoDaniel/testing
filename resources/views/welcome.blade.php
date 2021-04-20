@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Esempio mappa</title>
+        <title>Esempio mappa con maker</title>
 
         <link rel="stylesheet" href="{{asset('js/app.js')}}">
         
@@ -12,9 +12,6 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         
         {{-- ------------------------------------------ --}}
-        {{-- vue --}}
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-
         {{-- mappe cdn --}}
        <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.4.0/maps/maps.css'>
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.4.0/maps/maps-web.min.js"></script>
@@ -50,21 +47,35 @@
                 zoom: 13
             });
 
-        // maker singolo tramite  posizione (latitudine e longitudine)
-        // var marker = new tt.Marker().setLngLat(HQ).addTo(map);
+            // maker singolo tramite  posizione (latitudine e longitudine)
+            // var marker = new tt.Marker().setLngLat(HQ).addTo(map);
 
-        // lista array di posizioni (latitudine e longitudine)
-        var companyAssets = [
-            { lat: 45.47063201520255, lng: 9.179320179007835 },
-            { lat: 45.45272791968916, lng: 9.180218194669429 },
-            { lat: 45.466448360832445, lng:  9.197505636685777 },
-            { lat: 45.460235852020745, lng:  9.22371182266457 }
-        ];            
+            // lista array di posizioni (latitudine e longitudine)
+            var posizioni = [
+                { lat: 45.47063201520255, lng: 9.179320179007835 },
+                { lat: 45.45272791968916, lng: 9.180218194669429 },
+                { lat: 45.466448360832445, lng:  9.197505636685777 },
+                { lat: 45.460235852020745, lng:  9.22371182266457 }
+            ];     
+        
+            count = 1;
         
             // crea maker per ogni posizioni (latitudine e longitudine)
-            companyAssets.forEach(function (child) {
-                new tt.Marker().setLngLat(child).addTo(map);
+            posizioni.forEach( posizione => {
+                
+                // crea casella di testo di info con testo personalizzabile
+                var popup = new tt.Popup({ anchor: 'top' }).setText('appartamento '+count+' test');
+                
+                // aggiungi maker sulla mappa
+                var marker = new tt.Marker().setLngLat(posizione).addTo(map);
+                
+                // testo descritivo del maker
+                marker.setPopup(popup).togglePopup();
+
+                count++;
             });
+
+
 
         </script>
         {{-- ----------------------------- --}}
